@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  catalog-mysql:
+    image: mysql:8.0
+    container_name: catalog_mysql_app
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: catalog_app
+      MYSQL_USER: catalog_user
+      MYSQL_PASSWORD: catalog_password
+    ports:
+      - "3307:3306"
+    volumes:
+      - catalog_mysql_data:/var/lib/mysql
+    networks:
+      - catalog-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+      interval: 10s
+
+  catalog-phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: catalog_phpmyadmin_app
+    restart: always
+    environment:
+      PMA_HOST: catalog-mysql
+      PMA_USER: root
+      PMA_PASSWORD: root
+    ports:
+      - "8090:80"
+    depends_on:
+      catalog-mysql:
+        condition: service_healthy
+    networks:
+      - catalog-network
+
+volumes:
+  catalog_mysql_data:
+
+networks:
+  catalog-network:
+    driver: bridge

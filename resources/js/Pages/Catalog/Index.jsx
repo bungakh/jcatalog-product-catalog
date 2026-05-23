@@ -1,0 +1,319 @@
+import React, { useState, useEffect } from 'react';
+import { Head, Link } from '@inertiajs/react';
+import Header from '@/Components/Header';
+import HeroBanner from '@/Components/HeroBanner';
+import ProductCard from '@/Components/ProductCard';
+import ProductFilter from '@/Components/ProductFilter';
+import Footer from '@/Components/Footer';
+import { Button } from '@/Components/ui/button';
+import { Card } from '@/Components/ui/card';
+import { ArrowLeft01Icon, ArrowRight01Icon, Sad01Icon } from '@hugeicons/core-free-icons';
+import { Icon } from '@/Components/ui/icon';
+
+export default function CatalogIndex({ categories, products }) {
+    const [filters, setFilters] = useState({
+        categories: [],
+        priceMin: '',
+        priceMax: '',
+    });
+    const [sortBy, setSortBy] = useState('newest');
+    const [currentPage, setCurrentPage] = useState(1);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [categoryOffset, setCategoryOffset] = useState(0);
+    const itemsPerPage = 12;
+
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        const query = params.get('q') || '';
+        const categoryParam = params.get('category');
+
+        setSearchQuery(query);
+
+        if (categoryParam) {
+            const selectedCategories = categoryParam
+                .split(',')
+                .map((value) => value.trim())
+                .filter(Boolean)
+                .map((value) => {
+                    const categoryById = (categories || []).find((category) => String(category.id) === value);
+                    return categoryById?.slug || value;
+                });
+
+            setFilters((prev) => ({
+                ...prev,
+                categories: selectedCategories,
+            }));
+
+            if (selectedCategories.join(',') !== categoryParam) {
+                params.set('category', selectedCategories.join(','));
+                window.history.replaceState({}, '', `/?${params.toString()}`);
+            }
+        }
+    }, []);
+
+    // Apply filters
+    const filteredProducts = (products || []).filter((product) => {
+        const normalizedSearch = searchQuery.trim().toLowerCase();
+        const searchableText = [
+            product.name,
+            product.description,
+            product.category?.name,
+            product.price,
+        ]
+            .filter(Boolean)
+            .join(' ')
+            .toLowerCase();
+
+        const matchesSearch = !normalizedSearch || searchableText.includes(normalizedSearch);
+        const matchesCategory = filters.categories.length === 0 || filters.categories.includes(product.category?.slug);
+        const matchesPrice = 
+            (!filters.priceMin || product.price >= parseInt(filters.priceMin)) &&
+            (!filters.priceMax || product.price <= parseInt(filters.priceMax));
+        return matchesSearch && matchesCategory && matchesPrice;
+    });
+
+    // Sort products
+    const sortedProducts = [...filteredProducts].sort((a, b) => {
+        if (sortBy === 'price-low') return a.price - b.price;
+        if (sortBy === 'price-high') return b.price - a.price;
+        if (sortBy === 'name') return a.name.localeCompare(b.name);
+        return b.id - a.id; // newest
+    });
+
+    // Pagination
+    const totalPages = Math.ceil(sortedProducts.length / itemsPerPage);
+    const paginatedProducts = sortedProducts.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage
+    );
+
+    const handleFilterChange = (filterType, value) => {
+        if (filterType === 'reset') {
+            setFilters({
+                categories: [],
+                priceMin: '',
+                priceMax: '',
+            });
+            setSearchQuery('');
+            window.history.replaceState({}, '', '/');
+            setCurrentPage(1);
+        } else {
+            if (filterType === 'categories') {
+                const params = new URLSearchParams(window.location.search);
+                if (value?.length) {
+                    params.set('category', value.join(','));
+                } else {
+                    params.delete('category');
+                }
+                window.history.replaceState({}, '', `/${params.toString() ? `?${params.toString()}` : ''}`);
+            }
+
+            setFilters(prev => ({
+                ...prev,
+                [filterType]: value
+            }));
+            setCurrentPage(1);
+        }
+    };
+
+    const activeCategories = (categories || []).filter((category) =>
+        (products || []).some((product) => product.category_id === category.id)
+    );
+
+    const visibleCategories = activeCategories.length <= 2
+        ? activeCategories
+        : [
+            activeCategories[categoryOffset % activeCategories.length],
+            activeCategories[(categoryOffset + 1) % activeCategories.length],
+        ];
+
+    const slideCategories = (direction) => {
+        if (activeCategories.length <= 2) return;
+        setCategoryOffset((current) => (current + direction + activeCategories.length) % activeCategories.length);
+    };
+
+    return (
+        <div className="min-h-screen bg-gray-50 text-gray-950">
+            <Head title="Home" />
+            {/* Header */}
+            <Header categories={categories} />
+
+            {/* Main Content */}
+            <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
+                {/* Hero Banner */}
+                <div className="mb-8 sm:mb-12">
+                    <HeroBanner />
+                </div>
+
+                {/* Filter & Products Section */}
+                <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                    {/* Left Sidebar - Filters */}
+                    <aside className="lg:col-span-1">
+                        <Card className="sticky top-28 rounded-3xl border-gray-200 bg-white/95 p-6 shadow-sm">
+                            <h2 className="text-xl font-bold text-gray-900 mb-6">Filter Products</h2>
+                            <ProductFilter
+                                categories={categories}
+                                products={products}
+                                onFilterChange={handleFilterChange}
+                                filters={filters}
+                            />
+                        </Card>
+                    </aside>
+
+                    {/* Right Content - Products Grid */}
+                    <div id="products" className="lg:col-span-3">
+                        {/* Top Bar - Results & Sorting */}
+                        <Card className="mb-8 rounded-3xl border-gray-200 bg-white p-5 shadow-sm">
+                            {searchQuery && (
+                                <div className="mb-4 flex flex-wrap items-center gap-3 rounded-2xl bg-gray-50 px-4 py-3">
+                                    <span className="text-sm text-gray-600">
+                                        Search results for <span className="font-bold text-gray-950">“{searchQuery}”</span>
+                                    </span>
+                                    <button
+                                        type="button"
+                                        onClick={() => handleFilterChange('reset')}
+                                        className="text-xs font-bold uppercase tracking-wide text-gray-900 underline underline-offset-4"
+                                    >
+                                        Clear search
+                                    </button>
+                                </div>
+                            )}
+                            <div className="flex items-center justify-between">
+                            <div>
+                                <p className="text-gray-700 font-medium">
+                                    Showing <span className="font-bold text-gray-900">{paginatedProducts.length}</span> of{' '}
+                                    <span className="font-bold text-gray-900">{sortedProducts.length}</span> results
+                                </p>
+                            </div>
+
+                            <div className="flex items-center gap-4">
+                                <select
+                                    value={sortBy}
+                                    onChange={(e) => setSortBy(e.target.value)}
+                                    className="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-900"
+                                >
+                                    <option value="newest">Sort by: Newest</option>
+                                    <option value="price-low">Price: Low to High</option>
+                                    <option value="price-high">Price: High to Low</option>
+                                    <option value="name">Alphabetical</option>
+                                </select>
+                            </div>
+                            </div>
+                        </Card>
+
+                        {/* Products Grid */}
+                        {paginatedProducts.length > 0 ? (
+                            <>
+                                <div className="grid grid-cols-2 gap-3 mb-12 sm:gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+                                    {paginatedProducts.map((product) => (
+                                        <ProductCard key={product.id} product={product} />
+                                    ))}
+                                </div>
+
+                                {/* Pagination */}
+                                {totalPages > 1 && (
+                                    <div className="flex items-center justify-center gap-2 py-8">
+                                        <Button
+                                            variant="outline"
+                                            className="border-gray-300"
+                                            onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                                            disabled={currentPage === 1}
+                                        >
+                                            ← PREVIOUS
+                                        </Button>
+
+                                        <div className="flex gap-1">
+                                            {[...Array(Math.min(5, totalPages))].map((_, i) => {
+                                                const pageNum = i + 1;
+                                                return (
+                                                    <button
+                                                        key={pageNum}
+                                                        onClick={() => setCurrentPage(pageNum)}
+                                                        className={`w-10 h-10 rounded-lg font-semibold transition ${
+                                                            currentPage === pageNum
+                                                                ? 'bg-gray-900 text-white'
+                                                                : 'border border-gray-300 text-gray-700 hover:border-gray-900'
+                                                        }`}
+                                                    >
+                                                        {pageNum}
+                                                    </button>
+                                                );
+                                            })}
+                                        </div>
+
+                                        <Button
+                                            variant="outline"
+                                            className="border-gray-300"
+                                            onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                                            disabled={currentPage === totalPages}
+                                        >
+                                            NEXT →
+                                        </Button>
+                                    </div>
+                                )}
+                            </>
+                        ) : (
+                            <div className="text-center py-16">
+                                <Icon icon={Sad01Icon} className="mx-auto h-16 w-16 text-gray-400 mb-4" />
+                                <p className="text-gray-600 text-lg font-medium">No products found</p>
+                                <p className="text-gray-500 text-sm mt-1">Try adjusting your filters or search terms</p>
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+                {/* Other Categories Section */}
+                {activeCategories.length > 0 && (
+                    <div className="mt-20 pt-12 border-t border-gray-200">
+                        <div className="mb-8 flex items-center justify-between gap-4">
+                            <h2 className="text-2xl font-black tracking-tight text-gray-900 sm:text-4xl">OTHER CATEGORY</h2>
+                            <div className="flex gap-2">
+                                <button
+                                    type="button"
+                                    onClick={() => slideCategories(-1)}
+                                    disabled={activeCategories.length <= 2}
+                                    className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-gray-300 text-gray-500 transition hover:border-gray-900 hover:text-gray-900 disabled:cursor-not-allowed disabled:opacity-40"
+                                    aria-label="Previous category"
+                                >
+                                    <Icon icon={ArrowLeft01Icon} className="h-5 w-5" />
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => slideCategories(1)}
+                                    disabled={activeCategories.length <= 2}
+                                    className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-900 text-white transition hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-40"
+                                    aria-label="Next category"
+                                >
+                                    <Icon icon={ArrowRight01Icon} className="h-5 w-5" />
+                                </button>
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+                            {visibleCategories.map((category) => (
+                                <Link
+                                    key={category.id}
+                                    href={`/?category=${category.slug}`}
+                                    className="group relative flex h-72 items-center justify-center overflow-hidden rounded-3xl sm:h-96"
+                                >
+                                    <div className="absolute inset-0 bg-gradient-to-br from-gray-300 via-gray-200 to-gray-300"></div>
+                                    <div className="absolute inset-0 bg-gray-950/30 transition group-hover:bg-gray-950/45" />
+                                    <div className="relative z-10 px-6 text-center text-white">
+                                        <h3 className="mb-3 text-3xl font-black">{category.name}</h3>
+                                        <p className="mb-6 text-sm text-gray-100">Explore our curated collection</p>
+                                        <span className="inline-flex rounded-full border-2 border-white px-6 py-2 text-sm font-bold transition group-hover:bg-white group-hover:text-gray-900">
+                                            EXPLORE PRODUCT →
+                                        </span>
+                                    </div>
+                                </Link>
+                            ))}
+                        </div>
+                    </div>
+                )}
+            </main>
+
+            {/* Footer */}
+            <Footer />
+        </div>
+    );
+}

@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#app {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+html.cart-drawer-open,
+body.cart-drawer-open {
+    overflow: hidden;
+    touch-action: none;
+}
+
+@layer components {
+    .catalog-search-input,
+    .catalog-search-input:focus,
+    .catalog-search-input:focus-visible,
+    .catalog-search-input:active {
+        border: 0 !important;
+        outline: 0 !important;
+        box-shadow: none !important;
+        --tw-ring-offset-shadow: 0 0 #0000 !important;
+        --tw-ring-shadow: 0 0 #0000 !important;
+        --tw-shadow: 0 0 #0000 !important;
+    }
+
+    .catalog-search-input::-webkit-search-decoration,
+    .catalog-search-input::-webkit-search-cancel-button,
+    .catalog-search-input::-webkit-search-results-button,
+    .catalog-search-input::-webkit-search-results-decoration {
+        appearance: none;
+        -webkit-appearance: none;
+    }
+}
