@@ -7,7 +7,6 @@ import {
     Menu01Icon,
     Search01Icon,
     ShoppingCart01Icon,
-    UserIcon,
 } from '@hugeicons/core-free-icons';
 import CartDrawer from '@/Components/CartDrawer';
 import { Button } from '@/Components/ui/button';
@@ -228,9 +227,6 @@ export default function Header({ categories = [] }) {
                             aria-label="Toggle search"
                         >
                             <Icon icon={Search01Icon} className="h-5 w-5" />
-                        </Button>
-                        <Button type="button" variant="ghost" size="icon" className="hidden rounded-full sm:inline-flex">
-                            <Icon icon={UserIcon} className="h-5 w-5" />
                         </Button>
                         <Button type="button" variant="ghost" size="icon" className="hidden rounded-full sm:inline-flex">
                             <Icon icon={FavouriteIcon} className="h-5 w-5" />
