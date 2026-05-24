@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Console\Commands\GenerateProductPreviews;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -76,8 +78,11 @@ class CatalogController extends Controller
     private function productOpenGraphMeta(Product $product, Request $request): array
     {
         $baseUrl = $this->publicBaseUrl($request);
-        $productUrl = $baseUrl . '/product/' . $product->slug;
-        $imagePath = $product->image ?: $product->thumbnail;
+        $productUrl = $baseUrl . $request->getRequestUri();
+        $previewPath = GenerateProductPreviews::previewPathFor($product);
+        $imagePath = Storage::disk('public')->exists($previewPath)
+            ? $previewPath
+            : ($product->thumbnail ?: $product->image);
         $imageUrl = $imagePath ? $baseUrl . '/storage/' . ltrim($imagePath, '/') : $baseUrl . '/images/jcatalog-preview.png';
         $price = 'Rp ' . number_format((float) $product->price, 0, ',', '.');
         $category = $product->category?->name ?: 'Produk';
@@ -92,6 +97,9 @@ class CatalogController extends Controller
             'description' => "{$description} • {$category} • {$price}",
             'image' => $imageUrl,
             'image_alt' => $product->name,
+            'image_type' => str_ends_with($imagePath ?? '', '.jpg') || str_ends_with($imagePath ?? '', '.jpeg') ? 'image/jpeg' : 'image/webp',
+            'image_width' => 1200,
+            'image_height' => 630,
             'url' => $productUrl,
             'type' => 'product',
             'site_name' => 'JCatalog',

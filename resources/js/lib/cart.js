@@ -119,7 +119,7 @@ export function buildWhatsAppOrderMessage(items = getCartItems()) {
             const quantity = Number(item.quantity || 1);
             const price = Number(item.price || 0);
             const subtotal = price * quantity;
-            const productUrl = currentUrl && item.slug ? `${currentUrl}/product/${item.slug}` : '';
+            const productUrl = currentUrl && item.slug ? `${currentUrl}/product/${item.slug}?preview=wa-${item.id}` : '';
 
             return [
                 `${index + 1}. ${item.name}`,

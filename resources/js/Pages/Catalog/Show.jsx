@@ -40,6 +40,15 @@ export default function CatalogShow({ product, relatedProducts = [], categories 
         }).format(product.price || 0);
     }, [product.price]);
 
+    const productShareUrl = useMemo(() => {
+        if (typeof window === 'undefined') return meta?.url || '';
+
+        const url = new URL(meta?.url || window.location.href, window.location.origin);
+        url.searchParams.set('preview', `wa-${product.id}`);
+
+        return url.toString();
+    }, [meta?.url, product.id]);
+
     const whatsappMessage = encodeURIComponent(
         `Halo Admin, saya ingin pesan produk berikut:\n\n` +
             `Nama: ${product.name}\n` +
@@ -51,7 +60,7 @@ export default function CatalogShow({ product, relatedProducts = [], categories 
                 currency: 'IDR',
                 minimumFractionDigits: 0,
             }).format((product.price || 0) * quantity)}\n` +
-            `Link: ${typeof window !== 'undefined' ? window.location.href : ''}\n\n` +
+            `Link: ${productShareUrl}\n\n` +
             `Nama Pembeli: \n` +
             `Alamat: \n` +
             `Catatan: `
@@ -82,6 +91,9 @@ export default function CatalogShow({ product, relatedProducts = [], categories 
                 {meta?.url && <meta property="og:url" content={meta.url} />}
                 {meta?.image && <meta property="og:image" content={meta.image} />}
                 {meta?.image && <meta property="og:image:secure_url" content={meta.image} />}
+                {meta?.image_type && <meta property="og:image:type" content={meta.image_type} />}
+                {meta?.image_width && <meta property="og:image:width" content={String(meta.image_width)} />}
+                {meta?.image_height && <meta property="og:image:height" content={String(meta.image_height)} />}
                 {meta?.image_alt && <meta property="og:image:alt" content={meta.image_alt} />}
                 <meta property="og:type" content={meta?.type || 'product'} />
                 <meta property="og:site_name" content={meta?.site_name || 'JCatalog'} />

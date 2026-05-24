@@ -21,6 +21,9 @@
             <meta property="og:url" content="{{ $meta['url'] ?? url()->current() }}">
             <meta property="og:image" content="{{ $meta['image'] ?? '' }}">
             <meta property="og:image:secure_url" content="{{ $meta['image'] ?? '' }}">
+            <meta property="og:image:type" content="{{ $meta['image_type'] ?? 'image/jpeg' }}">
+            <meta property="og:image:width" content="{{ $meta['image_width'] ?? 1200 }}">
+            <meta property="og:image:height" content="{{ $meta['image_height'] ?? 630 }}">
             <meta property="og:image:alt" content="{{ $meta['image_alt'] ?? $meta['title'] ?? config('app.name', 'JCatalog') }}">
 
             <meta name="twitter:card" content="summary_large_image">
