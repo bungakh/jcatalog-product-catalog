@@ -21,7 +21,7 @@ import { Card } from '@/Components/ui/card';
 import { Icon } from '@/Components/ui/icon';
 import { addToCart } from '@/lib/cart';
 
-export default function CatalogShow({ product, relatedProducts = [], categories = [] }) {
+export default function CatalogShow({ product, relatedProducts = [], categories = [], meta = null }) {
     const [quantity, setQuantity] = useState(1);
     const [liked, setLiked] = useState(false);
     const [imageLoaded, setImageLoaded] = useState(false);
@@ -74,7 +74,22 @@ export default function CatalogShow({ product, relatedProducts = [], categories 
 
     return (
         <div className="min-h-screen bg-gray-50 text-gray-950">
-            <Head title={product.name} />
+            <Head title={product.name}>
+                {meta?.description && <meta name="description" content={meta.description} />}
+                {meta?.url && <link rel="canonical" href={meta.url} />}
+                {meta?.title && <meta property="og:title" content={meta.title} />}
+                {meta?.description && <meta property="og:description" content={meta.description} />}
+                {meta?.url && <meta property="og:url" content={meta.url} />}
+                {meta?.image && <meta property="og:image" content={meta.image} />}
+                {meta?.image && <meta property="og:image:secure_url" content={meta.image} />}
+                {meta?.image_alt && <meta property="og:image:alt" content={meta.image_alt} />}
+                <meta property="og:type" content={meta?.type || 'product'} />
+                <meta property="og:site_name" content={meta?.site_name || 'JCatalog'} />
+                <meta name="twitter:card" content="summary_large_image" />
+                {meta?.title && <meta name="twitter:title" content={meta.title} />}
+                {meta?.description && <meta name="twitter:description" content={meta.description} />}
+                {meta?.image && <meta name="twitter:image" content={meta.image} />}
+            </Head>
             <Header categories={categories} />
 
             <main>

@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -68,7 +69,41 @@ class CatalogController extends Controller
             'product' => $product,
             'relatedProducts' => $relatedProducts,
             'categories' => $categories,
+            'meta' => $this->productOpenGraphMeta($product, request()),
         ]);
+    }
+
+    private function productOpenGraphMeta(Product $product, Request $request): array
+    {
+        $baseUrl = $this->publicBaseUrl($request);
+        $productUrl = $baseUrl . '/product/' . $product->slug;
+        $imagePath = $product->image ?: $product->thumbnail;
+        $imageUrl = $imagePath ? $baseUrl . '/storage/' . ltrim($imagePath, '/') : $baseUrl . '/images/jcatalog-preview.png';
+        $price = 'Rp ' . number_format((float) $product->price, 0, ',', '.');
+        $category = $product->category?->name ?: 'Produk';
+        $description = Str::of(strip_tags((string) $product->description))
+            ->squish()
+            ->whenEmpty(fn () => "{$product->name} - {$category} di JCatalog")
+            ->limit(150)
+            ->toString();
+
+        return [
+            'title' => "{$product->name} | {$price}",
+            'description' => "{$description} • {$category} • {$price}",
+            'image' => $imageUrl,
+            'image_alt' => $product->name,
+            'url' => $productUrl,
+            'type' => 'product',
+            'site_name' => 'JCatalog',
+        ];
+    }
+
+    private function publicBaseUrl(Request $request): string
+    {
+        $protoHeader = $request->headers->get('x-forwarded-proto');
+        $scheme = $protoHeader ? trim(explode(',', $protoHeader)[0]) : $request->getScheme();
+
+        return $scheme . '://' . $request->getHttpHost();
     }
 
     public function category(string $slug): Response
