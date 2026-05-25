@@ -14,20 +14,18 @@ import { Card } from '@/Components/ui/card';
 import { Icon } from '@/Components/ui/icon';
 import { CART_UPDATED_EVENT, getCartCount, getCartItems } from '@/lib/cart';
 
-const getSelectedCategorySlugs = () => {
-    if (typeof window === 'undefined') return [];
+const getCurrentCategorySlug = () => {
+    if (typeof window === 'undefined') return '';
 
     return (new URLSearchParams(window.location.search).get('category') || '')
-        .split(',')
-        .map((slug) => slug.trim())
-        .filter(Boolean);
+        .split(',')[0]
+        ?.trim() || '';
 };
 
 export default function Header({ categories = [] }) {
     const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
     const [searchOpen, setSearchOpen] = React.useState(false);
     const [categoryOpen, setCategoryOpen] = React.useState(false);
-    const [selectedCategorySlugs, setSelectedCategorySlugs] = React.useState(getSelectedCategorySlugs);
     const [searchQuery, setSearchQuery] = React.useState(() => {
         if (typeof window === 'undefined') return '';
         return new URLSearchParams(window.location.search).get('q') || '';
@@ -73,34 +71,19 @@ export default function Header({ categories = [] }) {
         const query = searchQuery.trim();
 
         if (query) params.set('q', query);
-        if (selectedCategorySlugs.length) params.set('category', selectedCategorySlugs.join(','));
+        const currentCategorySlug = getCurrentCategorySlug();
+        if (currentCategorySlug) params.set('category', currentCategorySlug);
 
         navigateToIndex(params);
     };
 
-    const toggleCategory = (categorySlug) => {
-        const nextSlugs = selectedCategorySlugs.includes(categorySlug)
-            ? selectedCategorySlugs.filter((slug) => slug !== categorySlug)
-            : [...selectedCategorySlugs, categorySlug];
-
-        setSelectedCategorySlugs(nextSlugs);
-
-        const params = new URLSearchParams(window.location.search);
-        if (nextSlugs.length) {
-            params.set('category', nextSlugs.join(','));
-        } else {
-            params.delete('category');
-        }
+    const buildCategoryHref = (categorySlug) => {
+        const params = new URLSearchParams();
+        if (categorySlug) params.set('category', categorySlug);
         if (searchQuery.trim()) params.set('q', searchQuery.trim());
+        const queryString = params.toString();
 
-        navigateToIndex(params);
-    };
-
-    const clearCategories = () => {
-        setSelectedCategorySlugs([]);
-        const params = new URLSearchParams(window.location.search);
-        params.delete('category');
-        navigateToIndex(params);
+        return `/${queryString ? `?${queryString}` : ''}`;
     };
 
     const navLinkClass = 'text-sm font-semibold uppercase tracking-[0.18em] text-gray-600 transition hover:text-gray-950';
@@ -126,60 +109,28 @@ export default function Header({ categories = [] }) {
                                 className="h-10 rounded-full px-4 text-xs font-bold uppercase tracking-[0.18em] text-gray-700 hover:bg-gray-100 hover:text-gray-950"
                             >
                                 Categories
-                                {selectedCategorySlugs.length > 0 && (
-                                    <span className="ml-2 rounded-full bg-gray-950 px-2 py-0.5 text-[10px] text-white">
-                                        {selectedCategorySlugs.length}
-                                    </span>
-                                )}
                                 <Icon icon={ChevronDown} className={`ml-2 h-4 w-4 transition ${categoryOpen ? 'rotate-180' : ''}`} />
                             </Button>
 
                             {categoryOpen && (
-                                <Card className="absolute left-1/2 top-12 z-50 w-80 -translate-x-1/2 rounded-2xl border-gray-200 bg-white p-3 shadow-xl">
-                                    <div className="mb-3 flex items-center justify-between border-b border-gray-100 pb-3">
-                                        <div>
-                                            <p className="text-xs font-black uppercase tracking-[0.2em] text-gray-950">
-                                                Multi Select
-                                            </p>
-                                            <p className="mt-1 text-xs text-gray-500">Pilih satu atau beberapa kategori</p>
-                                        </div>
-                                        {selectedCategorySlugs.length > 0 && (
-                                            <button
-                                                type="button"
-                                                onClick={clearCategories}
-                                                className="text-xs font-bold text-gray-500 underline underline-offset-4 hover:text-gray-950"
-                                            >
-                                                Clear
-                                            </button>
-                                        )}
+                                <Card className="absolute left-1/2 top-12 z-50 w-72 -translate-x-1/2 overflow-hidden rounded-2xl border-gray-200 bg-white p-2 shadow-xl">
+                                    <div className="border-b border-gray-100 px-3 py-3">
+                                        <p className="text-xs font-black uppercase tracking-[0.2em] text-gray-950">
+                                            Categories
+                                        </p>
+                                        <p className="mt-1 text-xs text-gray-500">Pilih kategori produk</p>
                                     </div>
 
-                                    <div className="grid gap-2">
-                                        {categories.map((category) => {
-                                            const checked = selectedCategorySlugs.includes(category.slug);
-
-                                            return (
-                                                <button
-                                                    key={category.id}
-                                                    type="button"
-                                                    onClick={() => toggleCategory(category.slug)}
-                                                    className={`flex items-center justify-between rounded-xl border px-3 py-3 text-left transition ${
-                                                        checked
-                                                            ? 'border-gray-950 bg-gray-950 text-white'
-                                                            : 'border-gray-200 bg-white text-gray-700 hover:border-gray-400 hover:bg-gray-50'
-                                                    }`}
-                                                >
-                                                    <span className="text-sm font-semibold">{category.name}</span>
-                                                    <span
-                                                        className={`flex h-5 w-5 items-center justify-center rounded-md border text-xs ${
-                                                            checked ? 'border-white bg-white text-gray-950' : 'border-gray-300 text-transparent'
-                                                        }`}
-                                                    >
-                                                        {checked ? '✓' : ''}
-                                                    </span>
-                                                </button>
-                                            );
-                                        })}
+                                    <div className="py-2">
+                                        {categories.map((category) => (
+                                            <Link
+                                                key={category.id}
+                                                href={buildCategoryHref(category.slug)}
+                                                className="block rounded-xl px-4 py-3 text-sm font-semibold text-gray-700 transition hover:bg-gray-50 hover:text-gray-950"
+                                            >
+                                                {category.name}
+                                            </Link>
+                                        ))}
                                     </div>
                                 </Card>
                             )}
@@ -282,14 +233,13 @@ export default function Header({ categories = [] }) {
                         <div className="mt-2 border-t border-gray-100 pt-2">
                             <p className="px-4 py-2 text-xs font-black uppercase tracking-[0.2em] text-gray-400">Categories</p>
                             {categories.map((category) => (
-                                <button
+                                <Link
                                     key={category.id}
-                                    type="button"
-                                    onClick={() => toggleCategory(category.slug)}
+                                    href={buildCategoryHref(category.slug)}
                                     className="block w-full rounded-xl px-4 py-3 text-left text-sm font-semibold text-gray-700 hover:bg-gray-50"
                                 >
                                     {category.name}
-                                </button>
+                                </Link>
                             ))}
                         </div>
                         <a href="#footer" className="mt-2 block rounded-xl px-4 py-3 text-sm font-bold text-gray-900 hover:bg-gray-50">
