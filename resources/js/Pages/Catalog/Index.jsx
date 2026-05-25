@@ -132,6 +132,14 @@ export default function CatalogIndex({ categories, products }) {
         setCategoryOffset((current) => (current + direction + activeCategories.length) % activeCategories.length);
     };
 
+    const categoryPreviewImage = (category) => {
+        const categoryImage = category?.image;
+        const firstProductWithImage = (category?.products || []).find((product) => product?.thumbnail || product?.image);
+        const imagePath = categoryImage || firstProductWithImage?.thumbnail || firstProductWithImage?.image;
+
+        return imagePath ? `/storage/${imagePath}` : null;
+    };
+
     return (
         <div className="min-h-screen bg-gray-50 text-gray-950">
             <Head title="Home" />
@@ -290,23 +298,44 @@ export default function CatalogIndex({ categories, products }) {
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
-                            {visibleCategories.map((category) => (
-                                <Link
-                                    key={category.id}
-                                    href={`/?category=${category.slug}`}
-                                    className="group relative flex h-72 items-center justify-center overflow-hidden rounded-3xl sm:h-96"
-                                >
-                                    <div className="absolute inset-0 bg-gradient-to-br from-gray-300 via-gray-200 to-gray-300"></div>
-                                    <div className="absolute inset-0 bg-gray-950/30 transition group-hover:bg-gray-950/45" />
-                                    <div className="relative z-10 px-6 text-center text-white">
-                                        <h3 className="mb-3 text-3xl font-black">{category.name}</h3>
-                                        <p className="mb-6 text-sm text-gray-100">Explore our curated collection</p>
-                                        <span className="inline-flex rounded-full border-2 border-white px-6 py-2 text-sm font-bold transition group-hover:bg-white group-hover:text-gray-900">
-                                            EXPLORE PRODUCT →
-                                        </span>
-                                    </div>
-                                </Link>
-                            ))}
+                            {visibleCategories.map((category) => {
+                                const previewImage = categoryPreviewImage(category);
+                                const productCount = category.products?.length || 0;
+
+                                return (
+                                    <Link
+                                        key={category.id}
+                                        href={`/?category=${category.slug}`}
+                                        className="group relative flex h-72 items-end justify-start overflow-hidden rounded-3xl bg-gray-950 shadow-sm ring-1 ring-black/10 transition duration-500 hover:-translate-y-1 hover:shadow-2xl sm:h-96"
+                                    >
+                                        {previewImage ? (
+                                            <img
+                                                src={previewImage}
+                                                alt={category.name}
+                                                loading="lazy"
+                                                decoding="async"
+                                                className="absolute inset-0 h-full w-full object-cover object-center transition duration-700 group-hover:scale-105"
+                                            />
+                                        ) : (
+                                            <div className="absolute inset-0 bg-gradient-to-br from-gray-800 via-gray-700 to-gray-950" />
+                                        )}
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/10 transition duration-500 group-hover:from-black/90 group-hover:via-black/45" />
+                                        <div className="absolute right-5 top-5 rounded-full border border-white/25 bg-white/15 px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] text-white backdrop-blur-md">
+                                            {productCount} Product{productCount === 1 ? '' : 's'}
+                                        </div>
+                                        <div className="relative z-10 max-w-md px-6 pb-7 text-white sm:px-8 sm:pb-8">
+                                            <p className="mb-3 text-xs font-bold uppercase tracking-[0.28em] text-white/70">Category Collection</p>
+                                            <h3 className="mb-3 text-3xl font-black leading-tight sm:text-4xl">{category.name}</h3>
+                                            <p className="mb-6 line-clamp-2 text-sm leading-6 text-gray-100">
+                                                {category.description || 'Explore curated products from this collection.'}
+                                            </p>
+                                            <span className="inline-flex rounded-full border-2 border-white px-6 py-2 text-sm font-bold transition group-hover:bg-white group-hover:text-gray-900">
+                                                EXPLORE PRODUCT →
+                                            </span>
+                                        </div>
+                                    </Link>
+                                );
+                            })}
                         </div>
                     </div>
                 )}
