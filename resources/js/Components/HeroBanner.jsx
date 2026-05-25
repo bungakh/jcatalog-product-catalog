@@ -1,7 +1,5 @@
 import React from 'react';
-import { Image01Icon } from '@hugeicons/core-free-icons';
 import { Button } from '@/Components/ui/button';
-import { Icon } from '@/Components/ui/icon';
 
 export default function HeroBanner() {
     return (
@@ -30,14 +28,19 @@ export default function HeroBanner() {
                     </Button>
                 </div>
 
-                <div className="hidden items-center justify-center lg:flex">
-                    <div className="relative flex h-80 w-64 items-center justify-center overflow-hidden rounded-[2rem] bg-gradient-to-b from-slate-400/70 to-slate-300/70 shadow-inner">
-                        <div className="absolute -right-16 top-28 h-32 w-32 rounded-full border-[18px] border-slate-500/25" />
-                        <div className="text-center text-slate-600/80">
-                            <Icon icon={Image01Icon} className="mx-auto h-20 w-20" />
-                            <p className="mt-3 text-sm font-semibold">Product Visual</p>
-                        </div>
-                    </div>
+                <div className="pointer-events-none relative mx-auto flex h-72 w-full max-w-xs items-end justify-center sm:h-80 lg:mx-0 lg:h-96 lg:max-w-none">
+                    <div className="absolute bottom-0 h-56 w-56 rounded-full bg-white/45 blur-3xl sm:h-72 sm:w-72" />
+                    <div className="absolute bottom-6 h-48 w-48 rounded-full border-[18px] border-white/35 sm:h-64 sm:w-64" />
+                    <img
+                        src="/images/banner-product-visual.webp"
+                        alt="JCatalog product promo model"
+                        width="900"
+                        height="600"
+                        loading="eager"
+                        fetchPriority="high"
+                        decoding="async"
+                        className="relative z-10 h-full w-auto max-w-none object-contain drop-shadow-[0_24px_40px_rgba(15,23,42,0.25)]"
+                    />
                 </div>
             </div>
         </section>
