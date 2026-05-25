@@ -7,7 +7,15 @@ import ProductFilter from '@/Components/ProductFilter';
 import Footer from '@/Components/Footer';
 import { Button } from '@/Components/ui/button';
 import { Card } from '@/Components/ui/card';
-import { ArrowLeft01Icon, ArrowRight01Icon, Sad01Icon } from '@hugeicons/core-free-icons';
+import {
+    ArrowLeft01Icon,
+    ArrowRight01Icon,
+    Message01Icon,
+    Sad01Icon,
+    Shield01Icon,
+    ShoppingBag01Icon,
+    TruckIcon,
+} from '@hugeicons/core-free-icons';
 import { Icon } from '@/Components/ui/icon';
 
 export default function CatalogIndex({ categories, products }) {
@@ -157,15 +165,63 @@ export default function CatalogIndex({ categories, products }) {
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
                     {/* Left Sidebar - Filters */}
                     <aside className="lg:col-span-1">
-                        <Card className="sticky top-28 rounded-3xl border-gray-200 bg-white/95 p-6 shadow-sm">
-                            <h2 className="text-xl font-bold text-gray-900 mb-6">Filter Products</h2>
-                            <ProductFilter
-                                categories={categories}
-                                products={products}
-                                onFilterChange={handleFilterChange}
-                                filters={filters}
-                            />
-                        </Card>
+                        <div className="sticky top-28 space-y-4">
+                            <Card className="rounded-3xl border-gray-200 bg-white/95 p-6 shadow-sm">
+                                <h2 className="text-xl font-bold text-gray-900 mb-6">Filter Products</h2>
+                                <ProductFilter
+                                    categories={categories}
+                                    products={products}
+                                    onFilterChange={handleFilterChange}
+                                    filters={filters}
+                                />
+                            </Card>
+
+                            <Card className="overflow-hidden rounded-3xl border-gray-900 bg-gray-950 text-white shadow-sm">
+                                <div className="relative p-6">
+                                    <div className="absolute -right-10 -top-10 h-28 w-28 rounded-full bg-white/10" />
+                                    <div className="absolute -bottom-12 -left-10 h-28 w-28 rounded-full bg-white/5" />
+                                    <div className="relative">
+                                        <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-gray-950">
+                                            <Icon icon={Message01Icon} className="h-5 w-5" />
+                                        </div>
+                                        <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.24em] text-white/50">Need Help?</p>
+                                        <h3 className="text-lg font-black leading-tight">Bingung pilih produk?</h3>
+                                        <p className="mt-2 text-sm leading-6 text-white/70">
+                                            Chat admin untuk rekomendasi produk, stok, dan estimasi pengiriman.
+                                        </p>
+                                        <a
+                                            href="https://wa.me/6281388050997?text=Halo%20Admin%2C%20saya%20ingin%20konsultasi%20produk%20di%20JCatalog"
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            className="mt-5 inline-flex w-full items-center justify-center rounded-full bg-white px-4 py-3 text-xs font-black uppercase tracking-wide text-gray-950 transition hover:bg-gray-200"
+                                        >
+                                            Chat WhatsApp
+                                        </a>
+                                    </div>
+                                </div>
+                            </Card>
+
+                            <Card className="rounded-3xl border-gray-200 bg-white p-5 shadow-sm">
+                                <p className="mb-4 text-[10px] font-bold uppercase tracking-[0.24em] text-gray-400">Catalog Benefits</p>
+                                <div className="space-y-4">
+                                    {[
+                                        { icon: Shield01Icon, title: 'Produk Terverifikasi', desc: 'Data stok dan harga tersusun rapi.' },
+                                        { icon: TruckIcon, title: 'Order via WhatsApp', desc: 'Pesan cepat langsung ke admin.' },
+                                        { icon: ShoppingBag01Icon, title: `${products?.length || 0} Produk Aktif`, desc: 'Katalog siap dibrowse kapan saja.' },
+                                    ].map((item) => (
+                                        <div key={item.title} className="flex gap-3">
+                                            <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-2xl bg-gray-100 text-gray-700">
+                                                <Icon icon={item.icon} className="h-5 w-5" />
+                                            </div>
+                                            <div>
+                                                <h4 className="text-sm font-black text-gray-950">{item.title}</h4>
+                                                <p className="mt-1 text-xs leading-5 text-gray-500">{item.desc}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </Card>
+                        </div>
                     </aside>
 
                     {/* Right Content - Products Grid */}
