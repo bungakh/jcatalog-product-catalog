@@ -1,11 +1,18 @@
 <?php
 
 use App\Http\Controllers\CatalogController;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 // Catalog Routes
 Route::get('/', [CatalogController::class, 'index'])->name('catalog.index');
+Route::get('/terms-and-service', function () {
+    return Inertia::render('TermsAndService', [
+        'categories' => Category::where('is_active', true)->get(),
+    ]);
+})->name('terms.service');
 Route::get('/category/{slug}', [CatalogController::class, 'category'])->name('catalog.category');
 Route::get('/product/{slug}', [CatalogController::class, 'show'])->name('catalog.show');
 

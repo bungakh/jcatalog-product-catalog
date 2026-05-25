@@ -183,7 +183,7 @@ export function CinematicFooter({ appName = 'JCatalog' }) {
             { label: 'FAQ', href: '#footer' },
             { label: 'Help & Support', href: '#footer' },
             { label: 'Privacy Policy', href: '#footer' },
-            { label: 'Terms & Conditions', href: '#footer' },
+            { label: 'Terms & Services', href: '/terms-and-service' },
         ],
     };
 
