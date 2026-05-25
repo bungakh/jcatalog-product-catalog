@@ -3,7 +3,7 @@ import { Button } from '@/Components/ui/button';
 
 export default function HeroBanner() {
     return (
-        <section className="relative w-full overflow-hidden rounded-[2rem] bg-gradient-to-br from-slate-100 via-gray-200 to-slate-300 px-6 py-8 shadow-sm sm:px-10 sm:py-10 lg:h-96 lg:px-12 lg:py-0">
+        <section className="relative w-full overflow-hidden rounded-[2rem] bg-gradient-to-br from-slate-100 via-gray-200 to-slate-300 px-6 pb-0 pt-8 shadow-sm sm:px-10 sm:py-10 lg:h-96 lg:px-12 lg:py-0">
             <div className="pointer-events-none absolute -right-16 -top-16 h-44 w-44 rounded-full border-[22px] border-slate-400/30 sm:h-64 sm:w-64" />
             <div className="pointer-events-none absolute -bottom-20 left-1/2 h-56 w-56 -translate-x-1/2 rounded-full bg-white/25 blur-3xl" />
 
@@ -28,14 +28,14 @@ export default function HeroBanner() {
                     </Button>
                 </div>
 
-                <div className="pointer-events-none relative mx-auto flex h-72 w-full max-w-xs items-end justify-center sm:h-80 lg:mx-0 lg:h-96 lg:max-w-none">
+                <div className="pointer-events-none relative mx-auto -mb-1 flex h-80 w-full max-w-xs items-end justify-center self-end sm:mb-0 sm:h-80 lg:mx-0 lg:h-96 lg:max-w-none lg:justify-end lg:translate-x-14 xl:translate-x-20 2xl:translate-x-24">
                     <div className="absolute bottom-0 h-56 w-56 rounded-full bg-white/45 blur-3xl sm:h-72 sm:w-72" />
                     <div className="absolute bottom-6 h-48 w-48 rounded-full border-[18px] border-white/35 sm:h-64 sm:w-64" />
                     <img
                         src="/images/banner-product-visual.webp"
                         alt="JCatalog product promo model"
-                        width="900"
-                        height="600"
+                        width="555"
+                        height="900"
                         loading="eager"
                         fetchPriority="high"
                         decoding="async"
