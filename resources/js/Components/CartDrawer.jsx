@@ -1,4 +1,5 @@
 import React from 'react';
+import { createPortal } from 'react-dom';
 import { Link } from '@inertiajs/react';
 import { Cancel01Icon, Delete02Icon, MinusSignIcon, PlusSignIcon, ShoppingBag01Icon } from '@hugeicons/core-free-icons';
 import { Button } from '@/Components/ui/button';
@@ -58,17 +59,17 @@ export default function CartDrawer({ open, onClose, items = [], onItemsChange })
         window.open(checkoutUrl, '_blank', 'noopener,noreferrer');
     };
 
-    return (
+    const drawer = (
         <>
             <div
-                className={`fixed inset-0 z-[80] bg-black/40 backdrop-blur-sm transition-opacity duration-300 ${
+                className={`fixed inset-0 z-[9998] bg-gray-950/65 backdrop-blur-md transition-opacity duration-300 ${
                     open ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'
                 }`}
                 onClick={onClose}
             />
 
             <aside
-                className={`fixed inset-y-0 right-0 z-[90] flex h-[100svh] w-[100dvw] max-w-full flex-col overflow-hidden bg-white shadow-2xl transition-transform duration-300 sm:max-w-md ${
+                className={`fixed inset-y-0 right-0 z-[9999] flex h-[100svh] w-[100dvw] max-w-full flex-col overflow-hidden bg-white shadow-2xl transition-transform duration-300 sm:max-w-md ${
                     open ? 'translate-x-0' : 'translate-x-full'
                 }`}
                 aria-hidden={!open}
@@ -232,4 +233,10 @@ export default function CartDrawer({ open, onClose, items = [], onItemsChange })
             </aside>
         </>
     );
+
+    if (typeof document === 'undefined') {
+        return drawer;
+    }
+
+    return createPortal(drawer, document.body);
 }
