@@ -26,15 +26,8 @@ const STYLES = `
   to { transform: translateX(-50%); }
 }
 
-@keyframes footer-heartbeat {
-  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 5px rgba(248, 113, 113, 0.35)); }
-  15%, 45% { transform: scale(1.18); filter: drop-shadow(0 0 10px rgba(248, 113, 113, 0.7)); }
-  30% { transform: scale(1); }
-}
-
 .animate-footer-breathe { animation: footer-breathe 8s ease-in-out infinite alternate; }
 .animate-footer-scroll-marquee { animation: footer-scroll-marquee 42s linear infinite; }
-.animate-footer-heartbeat { animation: footer-heartbeat 2s cubic-bezier(0.25, 1, 0.5, 1) infinite; }
 
 .footer-bg-grid {
   background-size: 58px 58px;
@@ -87,11 +80,11 @@ const STYLES = `
 
 const MarqueeItem = () => (
     <div className="flex items-center space-x-10 px-5">
-        <span>Curated Product</span><span className="text-white/35">✦</span>
-        <span>Fast Catalog</span><span className="text-white/35">✦</span>
-        <span>Easy Checkout</span><span className="text-white/35">✦</span>
-        <span>Filament Admin</span><span className="text-white/35">✦</span>
-        <span>React Storefront</span><span className="text-white/35">✦</span>
+        <span>Produk Pilihan</span><span className="text-white/35">✦</span>
+        <span>Katalog Terbaru</span><span className="text-white/35">✦</span>
+        <span>Checkout WhatsApp</span><span className="text-white/35">✦</span>
+        <span>Promo Harian</span><span className="text-white/35">✦</span>
+        <span>Belanja Mudah</span><span className="text-white/35">✦</span>
     </div>
 );
 
@@ -328,13 +321,6 @@ export function CinematicFooter({ appName = 'JCatalog' }) {
                     <div className="relative z-20 flex w-full flex-row items-center justify-between gap-2 px-4 pb-4 sm:px-6 md:px-12 md:pb-8">
                         <div className="max-w-[38%] text-left text-[8px] font-semibold uppercase tracking-[0.13em] text-gray-500 sm:max-w-none md:text-xs md:tracking-widest">
                             © {year} {appName}. All rights reserved.
-                        </div>
-
-                        <div className="footer-glass-pill flex shrink-0 cursor-default items-center gap-1.5 rounded-full px-3 py-2 sm:gap-2 sm:px-5 sm:py-3">
-                            <span className="hidden text-[10px] font-bold uppercase tracking-widest text-gray-500 sm:inline md:text-xs">Crafted with</span>
-                            <span className="animate-footer-heartbeat text-xs text-red-400 md:text-base">❤</span>
-                            <span className="hidden text-[10px] font-bold uppercase tracking-widest text-gray-500 sm:inline md:text-xs">for</span>
-                            <span className="text-[10px] font-black text-white md:text-sm">{appName}</span>
                         </div>
 
                         <MagneticButton

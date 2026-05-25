@@ -114,13 +114,6 @@ export default function Header({ categories = [] }) {
 
                             {categoryOpen && (
                                 <Card className="absolute left-1/2 top-12 z-50 w-72 -translate-x-1/2 overflow-hidden rounded-2xl border-gray-200 bg-white p-2 shadow-xl">
-                                    <div className="border-b border-gray-100 px-3 py-3">
-                                        <p className="text-xs font-black uppercase tracking-[0.2em] text-gray-950">
-                                            Categories
-                                        </p>
-                                        <p className="mt-1 text-xs text-gray-500">Pilih kategori produk</p>
-                                    </div>
-
                                     <div className="py-2">
                                         {categories.map((category) => (
                                             <Link
