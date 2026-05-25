@@ -7,91 +7,109 @@ import { Card } from '@/Components/ui/card';
 const sections = [
     {
         number: '01',
-        title: 'Tentang Layanan',
+        title: 'Tentang JCatalog',
         paragraphs: [
-            'LPKS Gemilang Putra Bangsa merupakan perusahaan jasa penyaluran dan pelatihan tenaga kerja yang membantu mempertemukan pengguna jasa dengan tenaga kerja sesuai kebutuhan dan ketentuan yang berlaku.',
-            'Layanan kami dapat mencakup:',
+            'JCatalog adalah website katalog produk yang menampilkan informasi produk, kategori, harga, gambar, dan detail produk untuk membantu pelanggan memilih produk dengan mudah.',
+            'Website ini berfungsi sebagai storefront katalog dan sarana komunikasi pemesanan melalui WhatsApp.',
         ],
         bullets: [
-            'Rekrutmen tenaga kerja',
-            'Pelatihan dan pembekalan kerja',
-            'Penyaluran tenaga kerja',
-            'Konsultasi kebutuhan tenaga kerja',
-            'Pendampingan administrasi penempatan kerja',
+            'Menampilkan daftar produk dan kategori',
+            'Menyediakan pencarian dan filter produk',
+            'Menampilkan detail produk, harga, dan deskripsi',
+            'Menyediakan keranjang belanja lokal di perangkat pengguna',
+            'Mengarahkan checkout atau konsultasi produk melalui WhatsApp admin',
         ],
     },
     {
         number: '02',
         title: 'Penggunaan Website',
-        paragraphs: ['Pengguna website wajib:'],
+        paragraphs: ['Dengan menggunakan website JCatalog, pengguna setuju untuk menggunakan layanan secara wajar dan bertanggung jawab. Pengguna tidak diperkenankan:'],
         bullets: [
-            'Menggunakan website secara wajar dan tidak melanggar hukum',
-            'Tidak menyebarkan informasi palsu, spam, atau konten merugikan',
-            'Tidak mencoba merusak sistem website atau mengambil data tanpa izin',
+            'Menggunakan website untuk aktivitas yang melanggar hukum',
+            'Mengirim spam, konten palsu, atau informasi yang merugikan pihak lain',
+            'Mencoba mengakses area admin, sistem, database, atau data yang tidak berhak diakses',
+            'Menyalin, memodifikasi, atau menyalahgunakan konten website tanpa izin',
         ],
-        closing: 'Segala aktivitas yang melanggar hukum dapat ditindak sesuai peraturan yang berlaku di Indonesia.',
+        closing: 'Apabila ditemukan aktivitas yang merugikan sistem atau pengguna lain, JCatalog berhak membatasi akses dan mengambil tindakan yang diperlukan sesuai ketentuan hukum yang berlaku.',
     },
     {
         number: '03',
-        title: 'Informasi dan Data Pengguna',
+        title: 'Informasi Produk',
         paragraphs: [
-            'Setiap data yang diberikan pengguna melalui formulir, WhatsApp, email, atau media lainnya akan dijaga kerahasiaannya dan hanya digunakan untuk kebutuhan layanan perusahaan.',
-            'Kami tidak memperjualbelikan data pribadi pengguna kepada pihak lain tanpa izin pengguna, kecuali diwajibkan oleh hukum.',
+            'JCatalog berupaya menampilkan informasi produk secara akurat, termasuk nama produk, deskripsi, kategori, gambar, dan harga.',
+            'Namun informasi produk dapat berubah sewaktu-waktu mengikuti stok, pembaruan harga, promo, atau kebijakan penjual.',
+        ],
+        bullets: [
+            'Gambar produk dapat berbeda karena pencahayaan, layar perangkat, atau variasi produk',
+            'Harga dan ketersediaan stok perlu dikonfirmasi kembali kepada admin sebelum pembelian',
+            'Promo atau penawaran khusus hanya berlaku sesuai periode dan ketentuan yang diinformasikan',
         ],
     },
     {
         number: '04',
-        title: 'Proses Penyaluran Tenaga Kerja',
+        title: 'Keranjang dan Checkout WhatsApp',
         paragraphs: [
-            'LPKS Gemilang Putra Bangsa berupaya melakukan seleksi dan pelatihan tenaga kerja secara profesional. Namun:',
+            'Fitur keranjang pada JCatalog disimpan secara lokal di perangkat/browser pengguna. Data keranjang tidak menjadi bukti transaksi sampai pengguna menghubungi admin dan mendapatkan konfirmasi.',
+            'Checkout dilakukan dengan mengirim ringkasan pesanan ke WhatsApp admin untuk proses konfirmasi produk, stok, harga akhir, ongkos kirim, dan metode pembayaran.',
         ],
         bullets: [
-            'Penempatan kerja tetap mempertimbangkan kecocokan kebutuhan pengguna jasa',
-            'Keputusan penerimaan akhir berada pada pihak pengguna jasa/perusahaan',
-            'Kandidat wajib memberikan data dan dokumen yang benar',
+            'Pesanan dianggap masuk setelah pengguna mengirim pesan ke WhatsApp admin',
+            'Admin akan melakukan konfirmasi ketersediaan produk dan detail pembayaran',
+            'Kesalahan input jumlah, catatan, atau alamat menjadi tanggung jawab pengguna sampai dikonfirmasi ulang',
         ],
-        closing: 'Apabila ditemukan data palsu atau manipulasi dokumen, perusahaan berhak membatalkan proses kerja sama.',
     },
     {
         number: '05',
-        title: 'Pembayaran dan Biaya Layanan',
+        title: 'Pembayaran, Pengiriman, dan Pembatalan',
         paragraphs: [
-            'Biaya layanan, administrasi, atau pelatihan akan diinformasikan secara transparan kepada pengguna sebelum proses berjalan.',
-            'Segala transaksi dilakukan berdasarkan kesepakatan kedua belah pihak.',
+            'Pembayaran, pengiriman, dan pembatalan pesanan mengikuti kesepakatan antara pengguna dan admin melalui WhatsApp atau kanal komunikasi resmi lainnya.',
+            'JCatalog dapat menampilkan katalog dan membantu proses pemesanan, tetapi detail akhir transaksi tetap dikonfirmasi oleh admin.',
+        ],
+        bullets: [
+            'Biaya produk, ongkos kirim, dan biaya tambahan akan diinformasikan sebelum transaksi diproses',
+            'Estimasi pengiriman dapat berubah karena lokasi, jasa ekspedisi, cuaca, hari libur, atau kondisi operasional',
+            'Pembatalan pesanan mengikuti status pemrosesan dan kesepakatan dengan admin',
         ],
     },
     {
         number: '06',
-        title: 'Hak Kekayaan Intelektual',
-        paragraphs: ['Seluruh isi website seperti:'],
-        bullets: ['Logo', 'Desain', 'Teks', 'Foto', 'Video', 'Materi pelatihan'],
-        closing: 'Seluruh materi tersebut merupakan milik LPKS Gemilang Putra Bangsa dan tidak boleh digunakan kembali tanpa izin tertulis.',
-    },
-    {
-        number: '07',
-        title: 'Batas Tanggung Jawab',
-        paragraphs: ['Kami berusaha memberikan layanan terbaik, namun tidak bertanggung jawab atas:'],
-        bullets: [
-            'Gangguan teknis website',
-            'Kerugian akibat penggunaan website di luar ketentuan',
-            'Kesalahan data yang diberikan pengguna',
-            'Perselisihan di luar ruang lingkup kerja sama resmi perusahaan',
+        title: 'Data Pengguna dan Privasi',
+        paragraphs: [
+            'Data yang diberikan pengguna seperti nama, nomor WhatsApp, alamat pengiriman, dan detail pesanan hanya digunakan untuk kebutuhan komunikasi, pemrosesan pesanan, dan layanan pelanggan.',
+            'JCatalog tidak menjual data pribadi pengguna kepada pihak lain tanpa izin, kecuali jika diwajibkan oleh hukum atau diperlukan untuk proses layanan seperti pengiriman.',
         ],
     },
     {
+        number: '07',
+        title: 'Hak Kekayaan Intelektual',
+        paragraphs: ['Seluruh elemen pada website JCatalog merupakan bagian dari identitas dan konten website, termasuk namun tidak terbatas pada:'],
+        bullets: ['Logo dan nama website', 'Desain halaman', 'Teks dan copywriting', 'Foto atau gambar produk', 'Komponen UI dan tampilan katalog'],
+        closing: 'Konten tersebut tidak boleh digunakan ulang, disalin, atau didistribusikan untuk kepentingan komersial tanpa izin tertulis dari pemilik website.',
+    },
+    {
         number: '08',
-        title: 'Perubahan Ketentuan',
-        paragraphs: [
-            'LPKS Gemilang Putra Bangsa berhak mengubah Terms & Services kapan saja tanpa pemberitahuan sebelumnya.',
-            'Versi terbaru akan selalu tersedia di website resmi perusahaan.',
+        title: 'Batas Tanggung Jawab',
+        paragraphs: ['JCatalog berusaha menyediakan website yang aman, informatif, dan mudah digunakan. Namun JCatalog tidak bertanggung jawab atas:'],
+        bullets: [
+            'Gangguan teknis, downtime, atau kesalahan tampilan karena perangkat, jaringan, atau browser pengguna',
+            'Kerugian akibat penggunaan website di luar ketentuan',
+            'Kesalahan data yang dikirimkan pengguna saat melakukan pemesanan',
+            'Perubahan harga, stok, atau informasi produk sebelum transaksi dikonfirmasi admin',
         ],
     },
     {
         number: '09',
+        title: 'Perubahan Ketentuan',
+        paragraphs: [
+            'JCatalog berhak memperbarui Terms & Services ini kapan saja untuk menyesuaikan fitur, layanan, kebijakan, atau kebutuhan operasional website.',
+            'Versi terbaru akan ditampilkan pada halaman ini dan berlaku sejak dipublikasikan.',
+        ],
+    },
+    {
+        number: '10',
         title: 'Kontak',
         paragraphs: [
-            'Apabila ada pertanyaan terkait Terms & Services ini, silakan hubungi kami melalui website resmi LPKS Gemilang Putra Bangsa.',
-            'Email dan nomor kontak resmi dapat dilihat pada halaman kontak website perusahaan.',
+            'Apabila ada pertanyaan terkait produk, pesanan, atau Terms & Services ini, pengguna dapat menghubungi admin melalui tombol WhatsApp atau informasi kontak yang tersedia di website JCatalog.',
         ],
     },
 ];
@@ -115,7 +133,7 @@ export default function TermsAndService({ categories = [] }) {
                                 Terms & Services
                             </h1>
                             <p className="mt-6 text-base leading-8 text-white/70 sm:text-lg">
-                                Selamat datang di lpksgemilangputrabangsa.com. Dengan mengakses dan menggunakan website ini, Anda dianggap telah membaca, memahami, dan menyetujui seluruh syarat dan ketentuan berikut.
+                                Selamat datang di JCatalog. Dengan mengakses dan menggunakan website ini, Anda dianggap telah membaca, memahami, dan menyetujui syarat dan ketentuan layanan katalog produk berikut.
                             </p>
                         </div>
                     </div>
