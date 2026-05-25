@@ -109,11 +109,8 @@ export default function Header({ categories = [] }) {
         <header className="sticky top-0 z-40 w-full border-b border-gray-200/80 bg-white/95 backdrop-blur">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="flex min-h-16 items-center justify-between gap-2 sm:min-h-20 sm:gap-4">
-                    <Link href={route('catalog.index')} className="group flex min-w-0 flex-shrink flex-col leading-none">
+                    <Link href={route('catalog.index')} className="group flex min-w-0 flex-shrink items-center leading-none">
                         <span className="truncate text-lg font-black tracking-[0.18em] text-gray-950 sm:text-2xl sm:tracking-[0.28em]">JCatalog</span>
-                        <span className="mt-1 hidden text-[10px] font-bold uppercase tracking-[0.36em] text-gray-400 group-hover:text-gray-700 sm:block">
-                            Home
-                        </span>
                     </Link>
 
                     <nav className="hidden items-center gap-8 lg:flex">
